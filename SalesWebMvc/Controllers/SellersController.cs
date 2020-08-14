@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
@@ -11,6 +12,7 @@ using SalesWebMvc.Services.Exceptions;
 
 namespace SalesWebMvc.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SellersController : Controller
     {
 
@@ -22,6 +24,8 @@ namespace SalesWebMvc.Controllers
             _sellerService = sellerService;
             _departmentService = departmentService;
         }
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var list = await _sellerService.FindAllAsync();
@@ -65,6 +69,7 @@ namespace SalesWebMvc.Controllers
 
             return View(obj);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -81,6 +86,7 @@ namespace SalesWebMvc.Controllers
             }
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

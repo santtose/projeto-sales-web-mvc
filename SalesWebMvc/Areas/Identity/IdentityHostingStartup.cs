@@ -14,13 +14,8 @@ namespace SalesWebMvc.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
-                services.AddDbContext<SalesWebMvcIdentityContext>(options =>
-                    options.UseSqlServer(
-                        context.Configuration.GetConnectionString("SalesWebMvcIdentityContextConnection")));
-
-                services.AddDefaultIdentity<IdentityUser>()
-                    .AddEntityFrameworkStores<SalesWebMvcIdentityContext>();
+            builder.ConfigureServices((context, services) =>
+            {
             });
         }
     }

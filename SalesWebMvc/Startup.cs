@@ -15,6 +15,9 @@ using SalesWebMvc.Data;
 using SalesWebMvc.Services;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using SalesWebMvc.Areas.Identity.Data;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.AspNetCore.Identity;
 
 namespace SalesWebMvc
 {
@@ -37,6 +40,14 @@ namespace SalesWebMvc
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<SalesWebMvcIdentityContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("SalesWebMvcContext"))
+            );
+
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
+                .AddDefaultUI(Microsoft.AspNetCore.Identity.UI.UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<SalesWebMvcIdentityContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -77,6 +88,8 @@ namespace SalesWebMvc
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
